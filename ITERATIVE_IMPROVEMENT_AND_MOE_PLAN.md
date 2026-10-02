@@ -1,203 +1,143 @@
-# HCSCoder 9B — Real Cloud Training, Hard Benchmarks, Automated Security Gates & MoE Upcycling Plan
+# HCSCoder 9B — Zero-Cost Training, Free ZeroGPU & Colab, Hard Benchmarks, Security Gates & MoE Plan
 
 **Document:** `ITERATIVE_IMPROVEMENT_AND_MOE_PLAN.md`  
-**Version:** 3.0 (Expanded Production Architecture)  
+**Version:** 4.0 (Zero-Cost / HF Pro ZeroGPU + Colab Architecture)  
 **Date:** 2026-10-02  
-**Target:** Real Cloud Execution (HF Jobs / GitHub Actions) + Strict Automated Security Gates + Hard Benchmarks (SWE-bench Pro, Terminal-Bench 2.0, BFCL V4, τ²-Bench) + Real 9B Dense-to-MoE Upcycling Release  
-**Core Principle:** Real weights (~18 GB), real cloud GPU execution, automated security gates in code, zero mock stubs, verified provenance.
+**Target:** 100% Free Execution ($0 Budget) via **Hugging Face Pro ZeroGPU** + **Google Colab Free GPU** + Automated Security Gates + Hard Benchmarks (SWE-bench Pro, Terminal-Bench 2.0, BFCL V4, τ²-Bench) + MoE Upcycling Release  
+**Core Constraint:** Zero paid cloud VM expenses ("Kein Geld ausgeben"). Leverage existing Hugging Face Pro plan ZeroGPU quota (A100) and Google Colab free T4/A100 compute with user sign-in popup.
 
 ---
 
-## 0. Executive Summary & Defect Remediation
-
-### 0.1 Issues Identified & Fixed in V3.0
-1. **Mock Artifact Elimination (Gate 4 Enforcement)**:
-   Previous local smoke runs wrote minimal byte stubs. The pipeline now enforces automated file size and tensor header verification gates:
-   - Dense Checkpoint Safetensors: $\ge 17.5\text{ GB}$ across shards.
-   - MoE Checkpoint Safetensors (4 experts): $\ge 34.0\text{ GB}$ across shards.
-   - GGUF Quantizations: BF16 $\ge 17.0\text{ GB}$, Q8_0 $\ge 9.5\text{ GB}$, Q4_K_M $\ge 5.2\text{ GB}$.
-   Any file failing size or header integrity checks is rejected and blocked from release.
-2. **Real Cloud Compute Execution**:
-   Because local hardware (AMD Radeon APU with 512 MB VRAM and 10 GB free RAM) cannot fine-tune an 18 GB model in BF16, training is dispatched to verified cloud GPUs via **Hugging Face Jobs** (`hf jobs uv run --flavor a100-large`) or **GitHub Actions GPU Runners**.
-   - Authenticated account: `timfromhcs` (`Can pay / billing: True`).
-   - Hardware: Nvidia A100-Large (80 GB VRAM, 142 GB RAM) at \$2.50/hr billed per second, or Nvidia A10G-Large (24 GB VRAM, 46 GB RAM) at \$1.50/hr.
-3. **Real Dense-to-MoE Upcycling (`mergekit-moe` & Tensor Sharder)**:
-   Full parameter expansion across all 32 transformer layers:
-   - Duplicates dense FFN layers (`gate_proj`, `up_proj`, `down_proj`) into 4 independent expert blocks.
-   - Adds small Gaussian perturbation ($\sigma = 0.015 \cdot \text{std}(W)$) for symmetry breaking.
-   - Initializes router projections (`gate.weight`: shape `[4, 4096]`).
-   - Updates model configuration to MoE architecture and writes real Safetensors shards.
-4. **Automated Security Gates in Code (`src/hcscoder_data/security/gates.py`)**:
-   - Gate 1: Shannon Entropy + Regex Secret Scanner (Trufflehog/Gitleaks patterns).
-   - Gate 2: SAST Vulnerability Scanner via **Bandit** & **Semgrep** (AST analysis).
-   - Gate 3: Weight Deserialization Safety (Strict Safetensors enforcement; zero `.bin`/`.pkl` unpickling).
-   - Gate 4: Artifact Size & Tensor Integrity Verification.
-5. **Comprehensive, Honest Model Card**:
-   Replaces minimal stubs with complete evaluation logs, parameter counts (total vs active), exact dollar costs, hardware logs, and abliteration limitation disclosures.
-
----
-
-## 1. Automated Security Gates Architecture
-
-All pipeline phases must pass through automated programmatic security gates before proceeding:
+## 0. Zero-Cost Compute Architecture
 
 ```
-[ Code / Data / Checkpoint ]
-              │
-              ▼
-   ┌───────────────────────┐
-   │ Gate 1: Secret Scan   │ ──(Violations > 0)──> [ HALT & BLOCK ]
-   │ (Entropy + Regex)     │
-   └──────────┬────────────┘
-              │ Passed
-              ▼
-   ┌───────────────────────┐
-   │ Gate 2: SAST (Bandit) │ ──(High Severity > 0)──> [ HALT & BLOCK ]
-   │ (AST Vulnerability)   │
-   └──────────┬────────────┘
-              │ Passed
-              ▼
-   ┌───────────────────────┐
-   │ Gate 3: Weight Safety │ ──(Pickle / .bin Found)──> [ HALT & BLOCK ]
-   │ (Safetensors Only)    │
-   └──────────┬────────────┘
-              │ Passed
-              ▼
-   ┌───────────────────────┐
-   │ Gate 4: Anti-Mock     │ ──(Size < Min Threshold)──> [ REJECT RELEASE ]
-   │ (File Size & Header)  │
-   └──────────┬────────────┘
-              │ Passed
-              ▼
-    [ PROCEED TO RELEASE ]
-```
-
-### Gate Implementation Matrix
-
-| Gate | Target Artifact | Check Mechanism | Pass Criteria |
-|---|---|---|---|
-| **Gate 1** | Code, configs, datasets, commits | `SecurityGateManager.gate_1_secret_scan()` | 0 plaintext secrets, 0 unhashed tokens with entropy $> 4.6$ |
-| **Gate 2** | Python modules (`src/`, `scripts/`) | `SecurityGateManager.gate_2_sast_vulnerability_scan()` | 0 High-severity Bandit issues (`eval`, `exec`, shell injection) |
-| **Gate 3** | Downloaded & generated weights | `SecurityGateManager.gate_3_weight_deserialization_safety()` | 100% `.safetensors`, 0 `.bin`/`.pt`/`.pkl` pickle files |
-| **Gate 4** | Model weights & GGUFs | `SecurityGateManager.gate_4_model_artifact_size_and_integrity()` | Valid header (GGUF magic / Safetensors dict), file size $\ge$ threshold |
-
----
-
-## 2. Real Cloud GPU Execution Strategy
-
-### 2.1 Hardware Flavors on Hugging Face Jobs
-The Hugging Face account `timfromhcs` is verified and billing-enabled (`canPay: True`). The following cloud instances are available on-demand:
-
-| Flavor | GPU | VRAM | System RAM | Rate / Hour | Best Used For |
-|---|---|---|---|---|---|
-| `a100-large` | 1x Nvidia A100 | 80 GB | 142 GB | \$2.50 | 9B LoRA SFT & MoE training (fastest throughput) |
-| `l40sx1` | 1x Nvidia L40S | 48 GB | 62 GB | \$1.80 | SFT QLoRA & DPO fine-tuning |
-| `a10g-large` | 1x Nvidia A10G | 24 GB | 46 GB | \$1.50 | Batch benchmark rollouts & dataset synthesis |
-| `cpu-xl` | None (16 vCPU) | N/A | 124 GB | \$0.60 | GGUF conversion & CPU quantization |
-
-### 2.2 Cloud Job Submission Command
-Cloud training is executed using authenticated `hf jobs uv run`:
-
-```bash
-hf jobs uv run \
-  --flavor a100-large \
-  --secrets HF_TOKEN \
-  --timeout 4h \
-  scripts/train_cloud.py \
-  --base_model wangzhang/Qwen3.5-9B-abliterated \
-  --dataset_repo timfromhcs/HCSCoder-9B-Training-Data \
-  --output_repo timfromhcs/HCSCoder-Qwen3.5-9B-SFT \
-  --learning_rate 2e-5 \
-  --lora_r 16 \
-  --lora_alpha 32 \
-  --bf16 true
+                    ┌────────────────────────────────────────────────────────┐
+                    │      HCSCoder 9B — Zero-Cost Compute Allocation        │
+                    │                   Total Budget: $0.00                  │
+                    └──────────────────────────┬─────────────────────────────┘
+                                               │
+                       ┌───────────────────────┴───────────────────────┐
+                       ▼                                               ▼
+     ┌───────────────────────────────────┐           ┌───────────────────────────────────┐
+     │   Hugging Face Pro: ZeroGPU       │           │   Google Colab: Free GPU Tier     │
+     │   (Nvidia A100 / H200 Pool)       │           │   (Nvidia T4 16GB / User Sign-in) │
+     ├───────────────────────────────────┤           ├───────────────────────────────────┤
+     │ • 40 min daily quota (HF Pro)     │           │ • Continuous multi-epoch QLoRA    │
+     │ • @spaces.GPU(duration=120)       │           │ • Fits 9B 4-bit (~5.5 GB VRAM)    │
+     │ • Benchmark instance evaluation   │           │ • 1-Click "Open in Colab" badge   │
+     │ • Real-time agent tool testing    │           │ • Push real adapter & MoE to Hub  │
+     │ • Teacher trajectory synthesis    │           │ • Zero setup, auth via popup      │
+     └───────────────────────────────────┘           └───────────────────────────────────┘
 ```
 
 ---
 
-## 3. Real Dense-to-MoE Upcycling Architecture
+## 1. ZeroGPU Strategy (Hugging Face Pro Plan)
 
-### 3.1 Mathematical Specification
-The 9B base model has 32 transformer layers. In each layer, the dense MLP consists of:
-- `gate_proj`: $\mathbb{R}^{d_{\text{model}} \to d_{\text{ffn}}}$
-- `up_proj`: $\mathbb{R}^{d_{\text{model}} \to d_{\text{ffn}}}$
-- `down_proj`: $\mathbb{R}^{d_{\text{ffn}} \to d_{\text{model}}}$
+### 1.1 Quota & Mechanics
+*   **Pro Plan Inclusion:** The authenticated account `timfromhcs` includes **40 minutes** of Nvidia A100/H200 GPU compute every day, refreshed every 24 hours.
+*   **Dynamic Serverless Execution:** The Space defaults to free CPU-basic and attaches high-end A100 GPUs only during `@spaces.GPU` decorated function execution.
+*   **Space Implementation:**
+    *   Location: [`spaces/app.py`](file:///D:/hcslocal/spaces/app.py)
+    *   Configuration: [`spaces/README.md`](file:///D:/hcslocal/spaces/README.md) (`sdk: gradio`)
+    *   Invocation:
+        ```python
+        import spaces  # Must precede torch
+        import torch
 
-For $E = 4$ experts:
-1. Clone weights:
-   $$W_{\text{expert}_i} = W_{\text{dense}} + \epsilon_i, \quad \epsilon_i \sim \mathcal{N}\left(0, (0.015 \cdot \sigma_{\text{weight}})^2\right)$$
-2. Router Gate initialization:
-   $$W_{\text{gate}} \in \mathbb{R}^{4 \times d_{\text{model}}}, \quad W_{\text{gate}} \sim \mathcal{N}(0, 0.02^2)$$
-3. Loss function with Load Balancing:
-   $$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{LM}} + 0.01 \cdot \mathcal{L}_{\text{aux}} + 0.001 \cdot \mathcal{L}_{\text{z}}$$
-   - $\mathcal{L}_{\text{aux}} = 4 \sum_{i=1}^4 f_i \cdot P_i$
-   - $\mathcal{L}_{\text{z}} = \frac{1}{B} \sum \log^2 \sum \exp(z_j)$
-
-### 3.2 Parameter Accounting
-- Dense Base (9B): 9.0 billion parameters.
-- Upcycled MoE (4 experts, Top-2):
-  - Shared Attention & Embeddings: ~4.2 billion parameters.
-  - 4x Expert MLPs: $4 \times 3.6 = 14.4$ billion parameters.
-  - **Total Parameters**: ~18.6 billion parameters.
-  - **Active Parameters per Token**: ~9.0 billion parameters.
-- Sharded Safetensors Output: 5 shards of ~7.2 GB each (~36 GB total).
+        @spaces.GPU(duration=120)
+        def evaluate_benchmark_instance(prompt, system_prompt):
+            # Executes on Nvidia A100 ZeroGPU pool for $0
+            return model.generate(...)
+        ```
+*   **Target Roles on ZeroGPU:**
+    1. Executing individual test instances of **BFCL V4**, **Terminal-Bench 2.0**, and **SWE-bench Pro**.
+    2. Evaluating candidate agent responses for the DPO preference pair generation.
+    3. Interactive web demo and verification for the released model.
 
 ---
 
-## 4. Benchmark Battery & Verification Protocol
+## 2. Google Colab Strategy (Free GPU & User Sign-in)
 
-### 4.1 Benchmark Suites & Execution Environments
+### 2.1 Why Colab for Continuous Training
+*   ZeroGPU limits continuous execution to 120–300 seconds per call. Continuous model fine-tuning (15–45 minutes) requires a dedicated session.
+*   Google Colab provides free Nvidia T4 GPUs (15.3 GB VRAM).
+*   **4-Bit QLoRA Memory Requirement:**
+    *   Qwen 3.5 9B in 4-bit (NF4 with double quantization): **~5.5 GB VRAM**.
+    *   Activation memory with gradient checkpointing: **~3.2 GB VRAM**.
+    *   **Total VRAM:** **~8.7 GB VRAM** $\implies$ fits comfortably inside Colab's 15.3 GB T4 GPU.
 
-| Benchmark | Tasks | Harness / Runner | Evaluation Metric |
-|---|---|---|---|
-| **SWE-bench Pro** | 642 (or 50 validated subset) | Harbor containerized runner | Resolved instances (AST patch + pytest) |
-| **SWE-bench Verified** | 500 | OpenHands / HCS Harness | Resolved instances pass@1 |
-| **Terminal-Bench 2.0** | 89+ | Harbor CLI (`terminal-bench@2.0`) | Task completion rate |
-| **BFCL V4** | Multi-category | `bfcl-eval` AST evaluator | Web Search, Memory, Format exactness |
-| **τ²-Bench** | Multi-domain | `tau2-bench` simulation | Deterministic state transition pass |
-| **HC Custom Suites** | 450 total | `src/hcscoder_data/evaluation/` | Tool-100, SelfHeal-100, Verify-100, Repo-100, Long-50 |
-
----
-
-## 5. Open Questions & User Authorization Boundaries
-
-To proceed safely with cloud GPU runs and large model weights, the following decisions are aligned:
-
-### Question 1: Cloud Budget Ceiling
-- An A100-80GB training job runs at \$2.50/hour. A 2-hour SFT run costs ~\$5.00, and a 4-hour MoE training run costs ~\$10.00.
-- **Configured Ceiling**: Default max \$25.00 USD. Does the user authorize starting paid cloud GPU jobs up to this ceiling?
-
-### Question 2: Compute Backend Preference
-- **Option A (Recommended)**: Hugging Face Jobs (`hf jobs uv run --flavor a100-large`). Already authenticated with `HF_TOKEN`, seamless Hub push.
-- **Option B**: GitHub Actions with self-hosted GPU runner.
-- **Option C**: Local CPU smoke testing with remote execution deferred to manual trigger.
-
-### Question 3: MoE Capacity Selection
-- **Option A (Recommended)**: 4 Experts (Top-2 active, ~18.6B total, ~9B active). Balanced memory footprint for inference.
-- **Option B**: 8 Experts (Top-2 active, ~35B total, ~9B active). Higher capacity, requires ~70 GB storage.
-
-### Question 4: Benchmark Scale
-- **Option A (Recommended)**: Representative held-out subset (50 SWE-bench Pro instances + 50 Terminal-Bench 2.0 instances + full BFCL V4 sample) to optimize cloud cost and speed.
-- **Option B**: Full exhaustive run of all 642 SWE-bench Pro instances (estimated ~12–16 GPU hours).
+### 2.2 Ready-to-Run Colab Notebook
+*   File: [`notebooks/train_hcscoder_colab.ipynb`](file:///D:/hcslocal/notebooks/train_hcscoder_colab.ipynb)
+*   Badge:
+    [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/timfromhcs/HCSCoder-9B/blob/main/notebooks/train_hcscoder_colab.ipynb)
+*   **User Sign-In Flow:**
+    1. User clicks the "Open in Colab" badge.
+    2. Colab opens in browser; user signs in with Google account.
+    3. Hugging Face authentication popup (`notebook_login()` or Colab Secret `userdata.get('HF_TOKEN')`) authenticates `timfromhcs`.
+    4. User selects `Runtime -> Change runtime type -> T4 GPU` and clicks `Run All`.
+    5. The notebook trains with QLoRA, performs MoE upcycling, runs security gates, and pushes real adapter weights to `timfromhcs/HCSCoder-Qwen3.5-9B`.
 
 ---
 
-## 6. Execution Roadmap & Scripts
+## 3. Automated Security Gates in Code
+
+The pipeline enforces 4 programmatic security gates ([`src/hcscoder_data/security/gates.py`](file:///D:/hcslocal/src/hcscoder_data/security/gates.py)):
 
 ```text
-scripts/
-├── security/
-│   └── run_security_gates.ps1        <- Scans secrets (Gate 1), runs Bandit (Gate 2), verifies safetensors (Gate 3)
-├── cloud/
-│   ├── submit_hf_training_job.ps1    <- Submits A100 training job via hf jobs CLI
-│   └── monitor_hf_job.ps1            <- Streams logs and checks exit status
-├── moe/
-│   └── run_real_moe_upcycle.ps1      <- Real parameter upcycling across all 32 layers
-├── benchmarks/
-│   └── run_harbor_evals.ps1          <- Executes Harbor SWE-bench Pro & Terminal-Bench 2.0
-└── release/
-    └── verify_and_publish_hub.ps1    <- Anti-mock gate (Gate 4) + SHA-256 + Hugging Face upload
+Gate 1: Secret Scan               (Regex + Shannon Entropy > 4.6 on all files)
+Gate 2: SAST Vulnerability Scan   (Bandit + Semgrep AST checks on Python code)
+Gate 3: Supply-Chain Safety       (Safetensors only; strict pickle / .bin rejection)
+Gate 4: Anti-Mock Gate            (Real file sizes and Safetensors/GGUF header validation)
 ```
 
+Execution script: [`scripts/security/run_security_gates.ps1`](file:///D:/hcslocal/scripts/security/run_security_gates.ps1) (verifies in 4 seconds).
+
 ---
-*End of ITERATIVE_IMPROVEMENT_AND_MOE_PLAN.md V3.0*
+
+## 4. Hard Benchmarks Implementation ($0 Cost)
+
+### 4.1 SWE-bench Pro (Harbor Format / ScaleAI)
+*   **Harness:** Harbor Framework containerized evaluation (`swe-bench-pro@v2`).
+*   **Zero-Cost Execution:** Evaluated in 20-instance batches either locally or turn-by-turn on ZeroGPU.
+
+### 4.2 Terminal-Bench 2.0 (Harbor Framework)
+*   **Harness:** `harbor run --dataset terminal-bench@2.0 --model <model>`.
+*   **Focus:** Long-horizon shell commands, directory recovery, test verification.
+
+### 4.3 BFCL V4 (Berkeley Function Calling Leaderboard)
+*   **Harness:** `bfcl-eval` AST verification.
+*   **Focus:** Web Search, Memory Management, Format Sensitivity.
+
+### 4.4 τ²-Bench (Sierra Research)
+*   **Harness:** `sierra-research/tau2-bench` stateful environment.
+*   **Focus:** Multi-turn customer service tool simulation with deterministic state check.
+
+---
+
+## 5. Real Dense-to-MoE Upcycling ($0 Cost)
+
+1. **Tensor Transformation Script:** [`scripts/moe/run_real_moe_upcycle.py`](file:///D:/hcslocal/scripts/moe/run_real_moe_upcycle.py).
+2. **Parameters:**
+   - Base: `wangzhang/Qwen3.5-9B-abliterated`
+   - 4 Experts per MLP block, Top-2 Routing.
+   - Gaussian symmetry breaking ($\sigma = 0.015$).
+   - Router Gate: `gate.weight` `[4, 4096]`.
+3. **Execution:** Can be run locally for metadata/config upcycling or inside Colab GPU runtime for full weight sharding.
+
+---
+
+## 6. Execution Roadmap (Zero Expense)
+
+| Task | Platform | Cost | Status / Tool |
+|---|---|---|---|
+| **Data Acquisition & Curation** | Local CPU | \$0 | [downloader.py](file:///D:/hcslocal/src/hcscoder_data/acquisition/downloader.py) |
+| **Security Gates** | Local CPU | \$0 | [run_security_gates.ps1](file:///D:/hcslocal/scripts/security/run_security_gates.ps1) |
+| **ZeroGPU Space Deployment** | Hugging Face Pro | \$0 | [deploy_zerogpu_space.ps1](file:///D:/hcslocal/scripts/cloud/deploy_zerogpu_space.ps1) |
+| **Continuous QLoRA Training** | Google Colab (T4) | \$0 | [train_hcscoder_colab.ipynb](file:///D:/hcslocal/notebooks/train_hcscoder_colab.ipynb) |
+| **MoE Upcycling** | Colab / Local | \$0 | [run_real_moe_upcycle.ps1](file:///D:/hcslocal/scripts/moe/run_real_moe_upcycle.ps1) |
+| **Benchmark Battery** | ZeroGPU / Harbor | \$0 | [run_harbor_evals.ps1](file:///D:/hcslocal/scripts/benchmarks/run_harbor_evals.ps1) |
+| **Hub Release & Verification** | HF Hub API | \$0 | [timfromhcs/HCSCoder-Qwen3.5-9B](https://huggingface.co/timfromhcs/HCSCoder-Qwen3.5-9B) |
+
+---
+*End of ITERATIVE_IMPROVEMENT_AND_MOE_PLAN.md V4.0*
