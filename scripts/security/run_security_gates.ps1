@@ -1,0 +1,3 @@
+# Security Gates Runner Script
+Write-Output "==> Running Automated Security Gates (Gates 1, 2, 3)..."
+.\.venv\Scripts\python.exe -c "import sys; sys.path.insert(0, 'src'); from pathlib import Path; from hcscoder_data.security.gates import SecurityGateManager; mgr = SecurityGateManager(); p1, v1 = mgr.gate_1_secret_scan(); print('Gate 1 (Secret Scan):', 'PASS' if p1 else 'FAIL', v1); p2, v2 = mgr.gate_2_sast_vulnerability_scan('src'); print('Gate 2 (SAST Bandit):', 'PASS' if p2 else 'FAIL', v2); p3, v3 = mgr.gate_3_weight_deserialization_safety(Path('.')); print('Gate 3 (Deserialization Safetensors):', 'PASS' if p3 else 'FAIL', v3); sys.exit(0 if (p1 and p2 and p3) else 1)"
