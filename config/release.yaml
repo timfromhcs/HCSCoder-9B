@@ -1,0 +1,20 @@
+release:
+  gguf_formats:
+    - "BF16"
+    - "Q8_0"
+    - "Q5_K_M"
+    - "Q4_K_M"
+
+  artifacts:
+    include_safetensors: true
+    include_gguf: true
+    include_checksums: true
+    include_manifests: true
+    include_reports: true
+
+  gates:
+    no_fabricated_metrics: true
+    require_real_verification: true
+    require_checksums: true
+    require_provenance: true
+    auto_public_release: false

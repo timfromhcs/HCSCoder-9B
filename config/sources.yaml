@@ -1,0 +1,48 @@
+sources:
+  - id: "toolace"
+    name: "ToolACE"
+    repo: "Team-ACE/ToolACE"
+    type: "tool_calling"
+    license: "apache-2.0"
+    target_count: 5000
+    weight: 0.18
+
+  - id: "swe_zero"
+    name: "SWE-Zero OpenHands Trajectories"
+    repo: "nvidia/SWE-Zero-openhands-trajectories"
+    type: "coding_agent"
+    license: "mixed-permissive"
+    target_count: 5000
+    weight: 0.22
+
+  - id: "swe_hero"
+    name: "SWE-Hero OpenHands Trajectories"
+    repo: "nvidia/SWE-Hero-openhands-trajectories"
+    type: "execution_coding"
+    license: "mixed-permissive"
+    target_count: 2500
+    weight: 0.10
+
+  - id: "si2ca"
+    name: "SI2CA Training Trajectories"
+    repo: "Self-Improving-Coding-Agents/SI2CA-Training-Trajectories"
+    type: "self_improving"
+    license: "mit"
+    target_count: 2500
+    weight: 0.12
+
+  - id: "toolgym_long"
+    name: "ToolGym Long-Horizon"
+    repo: "ToolGym/long-horizon-traj"
+    type: "long_horizon"
+    license: "apache-2.0"
+    target_count: 1500
+    weight: 0.10
+
+  - id: "computer_use"
+    name: "Markov Computer Use"
+    repo: "markov-ai/computer-use"
+    type: "computer_use"
+    license: "mit"
+    target_count: 500
+    weight: 0.03

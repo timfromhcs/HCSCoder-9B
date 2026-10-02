@@ -1,0 +1,35 @@
+{
+  "seed": 42,
+  "train_count": 703,
+  "val_count": 47,
+  "test_count": 54,
+  "excluded_leakage_count": 3,
+  "excluded_leakage_ids": [
+    "6e3a7e64-b0e9-45e8-ba50-bae7edc8bc13",
+    "cf1df7fa-fb9f-43da-837a-e87cc7988a1d",
+    "ed5e1e77-c626-46bc-8966-5ea7ffc0a5a2"
+  ],
+  "unique_repos_train": 14,
+  "unique_repos_val": 1,
+  "unique_repos_test": 2,
+  "train_capabilities": {
+    "code_generation": 700,
+    "coding": 700,
+    "debugging": 377,
+    "git": 375,
+    "long_horizon": 360,
+    "planning": 454,
+    "reasoning": 454,
+    "repository_work": 418,
+    "self_healing": 395,
+    "terminal": 361,
+    "testing": 508,
+    "tool_error_recovery": 395,
+    "verification": 508,
+    "web_agent": 573,
+    "computer_use": 9,
+    "tool_calling": 339,
+    "tool_selection": 339,
+    "general_instruction": 1
+  }
+}

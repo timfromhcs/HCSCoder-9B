@@ -1,0 +1,42 @@
+[project]
+name = "hcscoder-9b"
+version = "0.1.0"
+description = "HCSCoder 9B - Fully Autonomous Training, MoE, Benchmarking & Release Pipeline"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub>=0.28.0",
+    "datasets>=3.0.0",
+    "transformers>=4.48.0",
+    "accelerate>=1.2.0",
+    "peft>=0.14.0",
+    "trl>=0.13.0",
+    "safetensors>=0.5.0",
+    "sentencepiece>=0.2.0",
+    "tokenizers>=0.21.0",
+    "torch",
+    "polars>=1.0.0",
+    "pyarrow>=18.0.0",
+    "orjson>=3.10.0",
+    "pydantic>=2.10.0",
+    "scikit-learn>=1.6.0",
+    "datasketch>=1.6.0",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.0",
+    "httpx>=0.28.0",
+    "rich>=13.9.0",
+    "typer>=0.15.0",
+    "tqdm>=4.67.0",
+    "pytest>=8.3.0",
+    "python-dotenv>=1.0.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+]

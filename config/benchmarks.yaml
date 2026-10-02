@@ -1,0 +1,40 @@
+benchmarks:
+  suites:
+    - id: "hc_tool_100"
+      name: "HC-Tool-100"
+      description: "Function calling and tool dispatch accuracy"
+      count: 100
+      metric: "tool_accuracy"
+      pass_threshold: 0.85
+
+    - id: "hc_selfheal_100"
+      name: "HC-SelfHeal-100"
+      description: "Tool and environment failure diagnosis and recovery"
+      count: 100
+      metric: "recovery_rate"
+      pass_threshold: 0.80
+
+    - id: "hc_repo_100"
+      name: "HC-Repo-100"
+      description: "Code inspection, patch generation, test pass"
+      count: 100
+      metric: "resolved_rate"
+      pass_threshold: 0.75
+
+    - id: "hc_verify_100"
+      name: "HC-Verify-100"
+      description: "Verification before claim and evidence grounding"
+      count: 100
+      metric: "verification_rate"
+      pass_threshold: 0.90
+
+    - id: "hc_long_50"
+      name: "HC-Long-50"
+      description: "Multi-turn long-horizon task completion without loop"
+      count: 50
+      metric: "completion_rate"
+      pass_threshold: 0.80
+
+  external:
+    bfcl_eval: true
+    swe_bench_verified: true

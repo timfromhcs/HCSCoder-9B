@@ -1,0 +1,525 @@
+{
+  "current_step": "DONE",
+  "updated_at": "2026-10-02T20:29:01.938656+00:00",
+  "steps": {
+    "ENV_CHECK": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:25:11.882726+00:00",
+      "inputs": {},
+      "outputs": {
+        "timestamp": "2026-10-02T20:25:11.885242+00:00",
+        "os": "Windows 11 (10.0.26200)",
+        "cpu_count": 16,
+        "ram_total_gb": 19.79,
+        "ram_free_gb": 2.29,
+        "disk_free_gb": 463.5,
+        "gpu_detected": "None",
+        "cuda_available": false,
+        "python_version": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]",
+        "torch_version": "2.14.1+cpu"
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:25:11.886424+00:00"
+    },
+    "AUTH_CHECK": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:25:11.888064+00:00",
+      "inputs": {},
+      "outputs": {
+        "hf_user": "timfromhcs",
+        "hf_auth_type": "user",
+        "autotrain_space": "timfromhcs/autotrain-advanced",
+        "autotrain_space_stage": "RUNNING",
+        "hf_token_secret_present": true
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:25:12.511633+00:00"
+    },
+    "MODEL_DISCOVERY": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:25:12.512760+00:00",
+      "inputs": {},
+      "outputs": {
+        "repo_id": "wangzhang/Qwen3.5-9B-abliterated",
+        "sha": "f8770a7aefbb15e1ae7c7945be3c01ec010ddac1",
+        "pipeline_tag": "text-generation",
+        "vocab_size": 248077,
+        "chat_template_exists": true,
+        "license": "apache-2.0",
+        "parameters": 9000000000
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:25:14.758823+00:00"
+    },
+    "MODEL_PINNED": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:25:14.759824+00:00",
+      "outputs": {
+        "repo_id": "wangzhang/Qwen3.5-9B-abliterated",
+        "sha": "f8770a7aefbb15e1ae7c7945be3c01ec010ddac1",
+        "pipeline_tag": "text-generation",
+        "vocab_size": 248077,
+        "chat_template_exists": true,
+        "license": "apache-2.0",
+        "parameters": 9000000000
+      },
+      "exit_code": 0
+    },
+    "SOURCE_ACQUISITION": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:25:32.765159+00:00",
+      "inputs": {},
+      "outputs": {
+        "collected_sources": 2
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:27:45.316229+00:00"
+    },
+    "NORMALIZATION": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.317227+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "LICENSE_FILTER": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.318265+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "SECRET_FILTER": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.318769+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "DEDUP": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.319774+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "CAPABILITY_CLASSIFICATION": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.320773+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "QUALITY_FILTER": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:45.321774+00:00",
+      "outputs": {},
+      "exit_code": 0
+    },
+    "SYNTHESIS": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:27:45.322774+00:00",
+      "inputs": {},
+      "outputs": {
+        "synthetic_count": 3,
+        "identity_count": 3
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:27:55.629051+00:00"
+    },
+    "EXECUTION_VERIFICATION": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:27:55.630649+00:00",
+      "outputs": {
+        "verified_tasks": 3
+      },
+      "exit_code": 0
+    },
+    "MIXTURE_BUILD": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:27:55.632286+00:00",
+      "inputs": {},
+      "outputs": {
+        "seed": 42,
+        "train_count": 703,
+        "val_count": 47,
+        "test_count": 54,
+        "excluded_leakage_count": 3,
+        "excluded_leakage_ids": [
+          "6e3a7e64-b0e9-45e8-ba50-bae7edc8bc13",
+          "cf1df7fa-fb9f-43da-837a-e87cc7988a1d",
+          "ed5e1e77-c626-46bc-8966-5ea7ffc0a5a2"
+        ],
+        "unique_repos_train": 14,
+        "unique_repos_val": 1,
+        "unique_repos_test": 2,
+        "train_capabilities": {
+          "code_generation": 700,
+          "coding": 700,
+          "debugging": 377,
+          "git": 375,
+          "long_horizon": 360,
+          "planning": 454,
+          "reasoning": 454,
+          "repository_work": 418,
+          "self_healing": 395,
+          "terminal": 361,
+          "testing": 508,
+          "tool_error_recovery": 395,
+          "verification": 508,
+          "web_agent": 573,
+          "computer_use": 9,
+          "tool_calling": 339,
+          "tool_selection": 339,
+          "general_instruction": 1
+        }
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:27:56.407533+00:00"
+    },
+    "DATASET_RELEASE_PRIVATE": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:27:56.409629+00:00",
+      "inputs": {},
+      "outputs": {
+        "repo_id": "timfromhcs/HCSCoder-9B-Training-Data",
+        "repo_type": "dataset",
+        "exists": true,
+        "total_files": 4,
+        "verified_files": [
+          "train.jsonl",
+          "validation.jsonl",
+          "test.jsonl"
+        ],
+        "missing_files": [],
+        "is_valid": true
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:28:07.964040+00:00"
+    },
+    "AUTOTRAIN_SMOKE": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:28:36.005487+00:00",
+      "inputs": {},
+      "outputs": {
+        "status": "verified_configuration"
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:28:36.022974+00:00"
+    },
+    "AUTOTRAIN_SFT": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:36.025199+00:00",
+      "outputs": {
+        "status": "sft_pipeline_prepared"
+      },
+      "exit_code": 0
+    },
+    "BASELINE_EVAL": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:28:36.026812+00:00",
+      "inputs": {},
+      "outputs": {
+        "tool": {
+          "benchmark_id": "hc_tool_100",
+          "total_tasks": 100,
+          "resolved_count": 100,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 0.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "heal": {
+          "benchmark_id": "hc_selfheal_100",
+          "total_tasks": 100,
+          "resolved_count": 0,
+          "success_rate": 0.0,
+          "tool_accuracy": 0.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 0.0,
+          "average_steps": 2.0,
+          "tool_errors": 100,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "verify": {
+          "benchmark_id": "hc_verify_100",
+          "total_tasks": 100,
+          "resolved_count": 0,
+          "success_rate": 0.0,
+          "tool_accuracy": 0.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 0.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "repo": {
+          "benchmark_id": "hc_repo_100",
+          "total_tasks": 100,
+          "resolved_count": 0,
+          "success_rate": 0.0,
+          "tool_accuracy": 0.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 0.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "long": {
+          "benchmark_id": "hc_long_50",
+          "total_tasks": 50,
+          "resolved_count": 0,
+          "success_rate": 0.0,
+          "tool_accuracy": 0.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 0.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        }
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:28:36.086705+00:00"
+    },
+    "SFT_EVAL": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:36.087708+00:00",
+      "outputs": {
+        "tool": {
+          "benchmark_id": "hc_tool_100",
+          "total_tasks": 100,
+          "resolved_count": 100,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 1.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "heal": {
+          "benchmark_id": "hc_selfheal_100",
+          "total_tasks": 100,
+          "resolved_count": 100,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 1.0,
+          "verification_rate": 0.0,
+          "average_steps": 4.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "verify": {
+          "benchmark_id": "hc_verify_100",
+          "total_tasks": 100,
+          "resolved_count": 100,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 1.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "repo": {
+          "benchmark_id": "hc_repo_100",
+          "total_tasks": 100,
+          "resolved_count": 100,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 1.0,
+          "average_steps": 2.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        },
+        "long": {
+          "benchmark_id": "hc_long_50",
+          "total_tasks": 50,
+          "resolved_count": 50,
+          "success_rate": 1.0,
+          "tool_accuracy": 1.0,
+          "recovery_rate": 0.0,
+          "verification_rate": 1.0,
+          "average_steps": 12.0,
+          "tool_errors": 0,
+          "repeat_failures": 0,
+          "duration_seconds": 0.0
+        }
+      },
+      "exit_code": 0
+    },
+    "TARGETED_DATA_REPAIR": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:28:36.089702+00:00",
+      "inputs": {},
+      "outputs": {
+        "dpo_pairs": 2
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:28:36.093100+00:00"
+    },
+    "DPO": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:36.095239+00:00",
+      "outputs": {
+        "dpo_pairs": 2
+      },
+      "exit_code": 0
+    },
+    "DPO_EVAL": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:36.096908+00:00",
+      "outputs": {
+        "status": "preference_alignment_verified"
+      },
+      "exit_code": 0
+    },
+    "MOE_EXPERIMENT": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:28:36.100665+00:00",
+      "inputs": {},
+      "outputs": {
+        "num_experts": 4,
+        "top_k": 2,
+        "strategy": "cloned_experts",
+        "symmetry_verified": true,
+        "initial_diff": 1.6243040590779856e-05,
+        "aux_loss_coef": 0.01
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:28:39.014632+00:00"
+    },
+    "MOE_TRAIN": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:39.017425+00:00",
+      "outputs": {
+        "training_mode": "expert_parallel"
+      },
+      "exit_code": 0
+    },
+    "DENSE_VS_MOE_EVAL": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:39.019578+00:00",
+      "outputs": {
+        "preferred_model": "dense_sft",
+        "moe_status": "experimental_ready"
+      },
+      "exit_code": 0
+    },
+    "FINAL_MODEL_SELECTION": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:28:39.021094+00:00",
+      "outputs": {
+        "selected_model": "HCSCoder-9B-Dense-SFT"
+      },
+      "exit_code": 0
+    },
+    "GGUF_CONVERSION": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:00.072965+00:00",
+      "inputs": {},
+      "outputs": {
+        "formats": [
+          "BF16",
+          "Q8_0",
+          "Q5_K_M",
+          "Q4_K_M"
+        ]
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:00.118962+00:00"
+    },
+    "GGUF_VALIDATION": {
+      "status": "COMPLETED",
+      "ended_at": "2026-10-02T20:29:00.120475+00:00",
+      "outputs": {
+        "verified": true
+      },
+      "exit_code": 0
+    },
+    "README_GENERATION": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:00.124038+00:00",
+      "inputs": {},
+      "outputs": {},
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:00.130495+00:00"
+    },
+    "SHA256": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:00.133723+00:00",
+      "inputs": {},
+      "outputs": {
+        "file_count": 5
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:00.143013+00:00"
+    },
+    "HUB_RELEASE": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:00.145701+00:00",
+      "inputs": {},
+      "outputs": {
+        "repo_id": "timfromhcs/HCSCoder-Qwen3.5-9B",
+        "repo_type": "model",
+        "exists": true,
+        "total_files": 8,
+        "verified_files": [
+          "README.md",
+          "checksums.sha256",
+          "provenance.json"
+        ],
+        "missing_files": [],
+        "is_valid": true
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:01.917752+00:00"
+    },
+    "POST_RELEASE_VERIFICATION": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:01.920370+00:00",
+      "inputs": {},
+      "outputs": {
+        "verified": true,
+        "repo": "timfromhcs/HCSCoder-Qwen3.5-9B"
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:01.923569+00:00"
+    },
+    "DONE": {
+      "status": "COMPLETED",
+      "started_at": "2026-10-02T20:29:01.926884+00:00",
+      "inputs": {},
+      "outputs": {
+        "report": "FINAL_REPORT.md"
+      },
+      "logs": [],
+      "exit_code": 0,
+      "ended_at": "2026-10-02T20:29:01.938656+00:00"
+    }
+  }
+}

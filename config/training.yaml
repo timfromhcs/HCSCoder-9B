@@ -1,0 +1,36 @@
+training:
+  method: "lora"
+  peft:
+    r: 16
+    lora_alpha: 32
+    lora_dropout: 0.05
+    target_modules:
+      - "q_proj"
+      - "k_proj"
+      - "v_proj"
+      - "o_proj"
+      - "gate_proj"
+      - "up_proj"
+      - "down_proj"
+    bias: "none"
+    task_type: "CAUSAL_LM"
+
+  hyperparameters:
+    learning_rate: 2.0e-5
+    lr_scheduler_type: "cosine"
+    warmup_ratio: 0.03
+    weight_decay: 0.01
+    max_seq_length: 4096
+    batch_size: 2
+    gradient_accumulation_steps: 8
+    num_train_epochs: 2
+    fp16: false
+    bf16: true
+    logging_steps: 10
+    save_strategy: "epoch"
+
+  autotrain:
+    backend: "spaces"
+    space_id: "timfromhcs/autotrain-advanced"
+    hardware: "a100-large"
+    task: "llm:sft"

@@ -1,0 +1,20 @@
+moe:
+  architecture:
+    num_experts: 4
+    num_experts_per_tok: 2
+    mlp_layer_pattern: "layers.{}.mlp"
+    router_jitter_noise: 0.01
+    aux_loss_coef: 0.01
+
+  upcycling:
+    strategy: "cloned_experts"
+    freeze_attention: true
+    freeze_embeddings: true
+    freeze_lm_head: true
+    train_router: true
+    train_experts: true
+
+  gates:
+    max_routing_imbalance: 0.35
+    min_tool_score_relative: 0.95
+    min_coding_score_relative: 0.95

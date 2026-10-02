@@ -1,0 +1,33 @@
+quality:
+  weights:
+    execution_evidence: 0.30
+    tool_correctness: 0.20
+    task_completion: 0.15
+    verification: 0.15
+    recovery_quality: 0.10
+    trajectory_coherence: 0.05
+    uniqueness: 0.05
+
+  buckets:
+    gold: 0.95
+    high: 0.85
+    good: 0.70
+    aux: 0.50
+    reject_below: 0.50
+
+secret_scanner:
+  entropy_threshold: 4.5
+  regex_patterns:
+    - "(?i)ghp_[a-zA-Z0-9]{36}"
+    - "(?i)hf_[a-zA-Z0-9]{34,}"
+    - "(?i)akid[a-zA-Z0-9]{16,}"
+    - "(?i)aws_secret_access_key\\s*=\\s*[a-zA-Z0-9/+=]{40}"
+    - "(?i)-----BEGIN\\s+(?:RSA|OPENSSH|EC|DSA)?\\s*PRIVATE KEY-----"
+    - "(?i)sk-[a-zA-Z0-9]{20,}"
+    - "(?i)(?:bearer|token|secret|password|api[_-]?key)\\s*[:=]\\s*['\"][a-zA-Z0-9_\\-\\.~]{16,}['\"]"
+
+deduplication:
+  simhash_threshold: 0.90
+  exact_hash: true
+  conversation_fingerprint: true
+  task_grouping: true

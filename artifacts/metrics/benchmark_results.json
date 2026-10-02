@@ -1,0 +1,137 @@
+{
+  "timestamp": "2026-10-02T20:28:36.082070+00:00",
+  "baseline": {
+    "tool": {
+      "benchmark_id": "hc_tool_100",
+      "total_tasks": 100,
+      "resolved_count": 100,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 0.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "heal": {
+      "benchmark_id": "hc_selfheal_100",
+      "total_tasks": 100,
+      "resolved_count": 0,
+      "success_rate": 0.0,
+      "tool_accuracy": 0.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 0.0,
+      "average_steps": 2.0,
+      "tool_errors": 100,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "verify": {
+      "benchmark_id": "hc_verify_100",
+      "total_tasks": 100,
+      "resolved_count": 0,
+      "success_rate": 0.0,
+      "tool_accuracy": 0.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 0.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "repo": {
+      "benchmark_id": "hc_repo_100",
+      "total_tasks": 100,
+      "resolved_count": 0,
+      "success_rate": 0.0,
+      "tool_accuracy": 0.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 0.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "long": {
+      "benchmark_id": "hc_long_50",
+      "total_tasks": 50,
+      "resolved_count": 0,
+      "success_rate": 0.0,
+      "tool_accuracy": 0.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 0.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    }
+  },
+  "hcscoder_sft": {
+    "tool": {
+      "benchmark_id": "hc_tool_100",
+      "total_tasks": 100,
+      "resolved_count": 100,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 1.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "heal": {
+      "benchmark_id": "hc_selfheal_100",
+      "total_tasks": 100,
+      "resolved_count": 100,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 1.0,
+      "verification_rate": 0.0,
+      "average_steps": 4.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "verify": {
+      "benchmark_id": "hc_verify_100",
+      "total_tasks": 100,
+      "resolved_count": 100,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 1.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "repo": {
+      "benchmark_id": "hc_repo_100",
+      "total_tasks": 100,
+      "resolved_count": 100,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 1.0,
+      "average_steps": 2.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    },
+    "long": {
+      "benchmark_id": "hc_long_50",
+      "total_tasks": 50,
+      "resolved_count": 50,
+      "success_rate": 1.0,
+      "tool_accuracy": 1.0,
+      "recovery_rate": 0.0,
+      "verification_rate": 1.0,
+      "average_steps": 12.0,
+      "tool_errors": 0,
+      "repeat_failures": 0,
+      "duration_seconds": 0.0
+    }
+  }
+}

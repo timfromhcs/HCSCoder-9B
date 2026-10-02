@@ -1,0 +1,27 @@
+{
+  "base_model": "wangzhang/Qwen3.5-9B-abliterated",
+  "peft": {
+    "r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "hyperparameters": {
+    "learning_rate": 2e-05,
+    "max_seq_length": 4096,
+    "batch_size": 2,
+    "gradient_accumulation_steps": 8,
+    "epochs": 2,
+    "bf16": true
+  },
+  "dataset_repo": "timfromhcs/HCSCoder-9B-Training-Data",
+  "timestamp": "2026-10-02T20:28:36.008641+00:00"
+}

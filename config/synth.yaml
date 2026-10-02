@@ -1,0 +1,31 @@
+synth:
+  hcs_identity:
+    target_count: 1200
+    style: "evidence_first"
+    principles:
+      - "inspect before modify"
+      - "verify before claiming success"
+      - "tool result must be inspected"
+      - "never fabricate evidence or tool outputs"
+      - "recover systematically from tool failure"
+      - "minimal safe diffs"
+
+  failure_injection:
+    target_count: 800
+    failure_types:
+      - "wrong_path"
+      - "missing_import"
+      - "syntax_error"
+      - "type_error"
+      - "test_failure"
+      - "timeout"
+      - "schema_mismatch"
+      - "json_parse_error"
+
+  long_horizon:
+    target_count: 600
+    step_ranges:
+      short: [2, 5]
+      medium: [6, 10]
+      long: [11, 20]
+      very_long: [21, 40]

@@ -1,0 +1,22 @@
+mixture:
+  target_proportions:
+    tool_calling: 0.18
+    coding: 0.22
+    planning: 0.08
+    long_horizon: 0.10
+    self_healing: 0.12
+    verification: 0.08
+    mcp: 0.05
+    web_agent: 0.04
+    computer_use: 0.03
+    git: 0.04
+    hcs_identity: 0.06
+
+splits:
+  train: 0.85
+  val: 0.10
+  test: 0.05
+  enforce_disjoint:
+    repository: true
+    task: true
+    benchmark: true

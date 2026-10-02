@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-10-02T20:25:11.885242+00:00",
+  "os": "Windows 11 (10.0.26200)",
+  "cpu_count": 16,
+  "ram_total_gb": 19.79,
+  "ram_free_gb": 2.29,
+  "disk_free_gb": 463.5,
+  "gpu_detected": "None",
+  "cuda_available": false,
+  "python_version": "3.12.13 (main, Jun  2 2026, 22:47:20) [MSC v.1944 64 bit (AMD64)]",
+  "torch_version": "2.14.1+cpu"
+}

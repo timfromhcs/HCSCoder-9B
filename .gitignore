@@ -1,0 +1,9 @@
+.env
+*.env
+__pycache__/
+*.pyc
+.venv/
+.uv/
+data/raw/
+artifacts/checkpoints/
+artifacts/gguf/

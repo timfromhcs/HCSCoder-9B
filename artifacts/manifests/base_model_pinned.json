@@ -1,0 +1,9 @@
+{
+  "repo_id": "wangzhang/Qwen3.5-9B-abliterated",
+  "sha": "f8770a7aefbb15e1ae7c7945be3c01ec010ddac1",
+  "pipeline_tag": "text-generation",
+  "vocab_size": 248077,
+  "chat_template_exists": true,
+  "license": "apache-2.0",
+  "parameters": 9000000000
+}
