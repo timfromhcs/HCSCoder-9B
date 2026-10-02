@@ -9,17 +9,21 @@ logger = logging.getLogger("MoEUpcycler")
 
 
 class MoEUpcycler:
-    """Upcycles a dense FFN/MLP module into a sparse MoE module with cloned experts."""
+    """Upcycles a dense FFN/MLP module into a sparse MoE module with cloned experts and safe memory offload."""
 
-    def __init__(self, num_experts: int = 4, top_k: int = 2):
+    def __init__(self, num_experts: int = 4, top_k: int = 2, offload_to_cpu: bool = True):
         self.num_experts = num_experts
         self.top_k = top_k
+        self.offload_to_cpu = offload_to_cpu
 
     def upcycle_mlp(self, dense_mlp: nn.Module, hidden_dim: int) -> MoEBlock:
-        logger.info(f"Upcycling dense MLP (dim={hidden_dim}) to {self.num_experts} experts (top_k={self.top_k})...")
+        logger.info(f"Upcycling dense MLP (dim={hidden_dim}) to {self.num_experts} experts (top_k={self.top_k}, cpu_offload={self.offload_to_cpu})...")
         experts = nn.ModuleList([copy.deepcopy(dense_mlp) for _ in range(self.num_experts)])
+        if self.offload_to_cpu and not next(dense_mlp.parameters()).is_cuda:
+            experts = experts.to("cpu")
         router = TopKRouter(hidden_dim=hidden_dim, num_experts=self.num_experts, top_k=self.top_k)
         return MoEBlock(experts=experts, router=router)
+
 
     def verify_upcycle(self, dense_mlp: nn.Module, moe_block: MoEBlock, hidden_dim: int) -> Tuple[bool, float]:
         """Verify that before training, MoE output with cloned experts closely matches dense output."""

@@ -7,3 +7,6 @@ __pycache__/
 data/raw/
 artifacts/checkpoints/
 artifacts/gguf/
+offload/
+HCSCoder_Workspace/
+

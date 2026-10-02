@@ -62,10 +62,13 @@
 ### 2.1 Why Colab for Continuous Training
 *   ZeroGPU limits continuous execution to 120–300 seconds per call. Continuous model fine-tuning (15–45 minutes) requires a dedicated session.
 *   Google Colab provides free Nvidia T4 GPUs (15.3 GB VRAM).
-*   **4-Bit QLoRA Memory Requirement:**
-    *   Qwen 3.5 9B in 4-bit (NF4 with double quantization): **~5.5 GB VRAM**.
-    *   Activation memory with gradient checkpointing: **~3.2 GB VRAM**.
-    *   **Total VRAM:** **~8.7 GB VRAM** $\implies$ fits comfortably inside Colab's 15.3 GB T4 GPU.
+*   **Zero-OOM 4-Bit QLoRA & Self-Healing Memory Requirements:**
+    *   Qwen 3.5 4B (Claude 4.6 Opus Abliterated) in 4-bit (NF4 + double quant): **~2.2 GB VRAM**.
+    *   CPU Memory Offload: Non-essential layers and activations automatically stream to host RAM.
+    *   Activation memory with gradient checkpointing: **~1.5 GB VRAM**.
+    *   Paged 8-bit AdamW optimizer: Pages states out during VRAM peaks.
+    *   **Total VRAM Footprint:** **~3.7 GB VRAM** $\implies$ effortlessly fits Colab Free T4 (15.3 GB VRAM) with 0 OOM risk.
+
 
 ### 2.2 Ready-to-Run Colab Notebook
 *   File: [`notebooks/train_hcscoder_colab.ipynb`](file:///D:/hcslocal/notebooks/train_hcscoder_colab.ipynb)

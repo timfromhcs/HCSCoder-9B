@@ -13,6 +13,10 @@ moe:
     freeze_lm_head: true
     train_router: true
     train_experts: true
+    offload_to_cpu: true
+    layer_by_layer_upcycle: true
+    self_healing_memory: true
+
 
   gates:
     max_routing_imbalance: 0.35

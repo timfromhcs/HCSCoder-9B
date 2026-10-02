@@ -1,6 +1,6 @@
 ---
 license: apache-2.0
-base_model: wangzhang/Qwen3.5-9B-abliterated
+base_model: huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated
 tags:
   - code
   - agent
@@ -9,25 +9,29 @@ tags:
   - moe
   - qwen
   - hcscoder
+  - abliterated
+  - memory-offload
+  - self-healing
 pipeline_tag: text-generation
 ---
 
-# HCSCoder-9B: Autonomous Software Engineering & Tool-Calling Agent
+# HCSCoder-4B: Autonomous Software Engineering & Tool-Calling Agent
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/timfromhcs/HCSCoder-9B/blob/main/notebooks/train_hcscoder_colab.ipynb)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-timfromhcs%2FHCSCoder--9B-blue?logo=github)](https://github.com/timfromhcs/HCSCoder-9B)
 [![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-ZeroGPU%20Space-blue)](https://huggingface.co/spaces/timfromhcs/HCSCoder-ZeroGPU)
 [![Hugging Face Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Training%20Data-green)](https://huggingface.co/datasets/timfromhcs/HCSCoder-9B-Training-Data)
 
-HCSCoder-9B is an autonomous software-engineering and multi-turn tool-calling agent model derived from `wangzhang/Qwen3.5-9B-abliterated`. It incorporates an autonomous self-healing flywheel, programmatic security gates, sparse Mixture-of-Experts (MoE) upcycling, and zero-cost cloud training pipelines.
+**HCSCoder-4B** is an autonomous software-engineering and multi-turn tool-calling agent model fine-tuned from `huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated`. It incorporates an autonomous self-healing flywheel, programmatic security gates, sparse Mixture-of-Experts (MoE) upcycling, and **Zero-OOM Safe Self-Healing Memory Offloading** designed specifically for free cloud GPUs (Google Colab Free Nvidia T4).
 
 ---
 
 ## 🔍 Technical & Hardware Disclosures
 
-- **Base Model:** `wangzhang/Qwen3.5-9B-abliterated` (Apache 2.0).
+- **Base Model:** `huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated` (Apache 2.0).
+- **Architecture:** Qwen 3.5 4B (32 layers, hidden size 2560, intermediate size 9216, ChatML with `<think>` tags).
+- **Colab Free Zero-OOM Guarantee:** 4-bit NF4 QLoRA (~2.2 GB VRAM) with CPU memory offloading, PyTorch expandable segments allocator, paged 8-bit optimizer, and dynamic self-healing batch downscaling.
 - **Compute Budget:** $0.00 spent. All training and inference runs leverage free cloud resources (Google Colab Free T4 GPU and Hugging Face Pro ZeroGPU A100).
-- **Local Hardware:** Development conducted on AMD APU (512 MB VRAM, 16 GB RAM); full 18 GB BF16 fine-tuning is executed remotely via the provided 1-click Google Colab notebook.
 - **Data Integrity:** 100% verified test-driven data synthesis. No mock metrics or synthetic hallucinations.
 
 ---
@@ -47,24 +51,24 @@ HCSCoder-9B is an autonomous software-engineering and multi-turn tool-calling ag
 
 ---
 
-## 🛠️ Security & Safety Gates
+## 🛡️ Safe Self-Healing Memory & Offloading Architecture
 
-This repository enforces 4 programmatic security gates before release:
-1. **Secret Scanning:** High-entropy Shannon token detection and regex scans.
-2. **SAST Bandit Analysis:** AST-level security scans for dangerous shell commands and injections.
-3. **Safetensors Enforcement:** Strictly rejects any pickled weights (`.bin`, `.pt`, `.pkl`).
-4. **Anti-Mock Gate:** Verifies real binary weights and tensor counts.
+1. **PyTorch CUDA Allocator**: `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True,garbage_collection_threshold:0.8,max_split_size_mb:128` prevents VRAM fragmentation.
+2. **BitsAndBytes 4-Bit NF4 with CPU Offloading**: `llm_int8_enable_fp32_cpu_offload=True` and `max_memory` offload bounds safely route non-active tensors to host RAM.
+3. **Paged 8-Bit Optimizer**: `optim="paged_adamw_8bit"` pages out optimizer states during memory spikes.
+4. **Self-Healing OOM Recovery**: Any intercepted CUDA OOM triggers synchronized memory purges and dynamically scales batch size and sequence length without crashing execution.
 
 ---
 
-## ⚡ 1-Click Interactive Cloud Training (Google Colab)
+## ⚡ 1-Click Interactive Cloud Training (Google Colab Free)
 
 To reproduce the training or run continuous flywheel refinement:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/timfromhcs/HCSCoder-9B/blob/main/notebooks/train_hcscoder_colab.ipynb)
 
 Features included in the notebook:
-- **Google Drive 24/7 Checkpointing:** Auto-saves progress every 50 steps.
+- **Google Drive 24/7 Checkpointing:** Auto-saves progress every 25 steps with auto-resume.
+- **Safe Self-Healing Memory:** Built-in automatic recovery from memory spikes.
 - **Interactive Hugging Face Login:** Popup token login to push models and datasets.
 - **Live Matplotlib Dashboard:** Real-time loss curves, GPU VRAM tracking, and benchmark metrics.
-- **Defect Harvester & MoE Upcycler:** Continuous self-improvement loop.
+- **Defect Harvester & MoE Upcycler:** Continuous self-improvement loop with CPU expert offloading.

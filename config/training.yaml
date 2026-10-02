@@ -20,17 +20,30 @@ training:
     lr_scheduler_type: "cosine"
     warmup_ratio: 0.03
     weight_decay: 0.01
-    max_seq_length: 4096
-    batch_size: 2
-    gradient_accumulation_steps: 8
+    max_seq_length: 2048
+    batch_size: 1
+    gradient_accumulation_steps: 16
     num_train_epochs: 2
     fp16: false
     bf16: true
     logging_steps: 10
     save_strategy: "epoch"
+    optim: "paged_adamw_8bit"
+    gradient_checkpointing: true
+
+  memory_guard:
+    enable_memory_offload: true
+    enable_self_healing: true
+    offload_folder: "./offload"
+    llm_int8_enable_fp32_cpu_offload: true
+    max_gpu_memory: "12GiB"
+    max_cpu_memory: "30GiB"
+    expandable_segments: true
+    auto_batch_downscale_on_oom: true
 
   autotrain:
     backend: "spaces"
     space_id: "timfromhcs/autotrain-advanced"
     hardware: "a100-large"
     task: "llm:sft"
+

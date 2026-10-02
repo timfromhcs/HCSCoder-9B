@@ -1,9 +1,14 @@
 {
-  "repo_id": "wangzhang/Qwen3.5-9B-abliterated",
-  "sha": "f8770a7aefbb15e1ae7c7945be3c01ec010ddac1",
+  "repo_id": "huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated",
+  "sha": "794528f9c51127730c7cf8bcfda63164581ae722",
   "pipeline_tag": "text-generation",
-  "vocab_size": 248077,
+  "vocab_size": 248320,
   "chat_template_exists": true,
   "license": "apache-2.0",
-  "parameters": 9000000000
+  "parameters": 4000000000,
+  "memory_guard": {
+    "safe_self_healing": true,
+    "memory_offload": true,
+    "colab_free_zero_oom": true
+  }
 }

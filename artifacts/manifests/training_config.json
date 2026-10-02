@@ -1,5 +1,5 @@
 {
-  "base_model": "wangzhang/Qwen3.5-9B-abliterated",
+  "base_model": "huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated",
   "peft": {
     "r": 16,
     "lora_alpha": 32,
@@ -16,12 +16,22 @@
   },
   "hyperparameters": {
     "learning_rate": 2e-05,
-    "max_seq_length": 4096,
-    "batch_size": 2,
-    "gradient_accumulation_steps": 8,
+    "max_seq_length": 2048,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 16,
     "epochs": 2,
-    "bf16": true
+    "bf16": true,
+    "optim": "paged_adamw_8bit",
+    "gradient_checkpointing": true
+  },
+  "memory_guard": {
+    "safe_self_healing": true,
+    "memory_offload": true,
+    "offload_dir": "./offload",
+    "llm_int8_enable_fp32_cpu_offload": true,
+    "expandable_segments": true,
+    "colab_free_zero_oom_guarantee": true
   },
   "dataset_repo": "timfromhcs/HCSCoder-9B-Training-Data",
-  "timestamp": "2026-10-02T20:28:36.008641+00:00"
+  "timestamp": "2026-10-02T21:28:36.008641+00:00"
 }

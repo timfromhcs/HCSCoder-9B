@@ -108,14 +108,16 @@ To surpass frontier models, HCSCoder does not train on unverified synthetic text
 ## 3. MoE Architecture as Standard
 
 ### 3.1 Architectural Specification
-- **Base**: `wangzhang/Qwen3.5-9B-abliterated`
-- **Total Experts**: $E = 4$ (cloned from dense MLP blocks)
+- **Base**: `huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated` (Qwen 3.5 4B architecture with `<think>` tags)
+- **Zero-OOM Safe Self-Healing Memory**: Expandable segments, 4-bit NF4 QLoRA, CPU memory offloading, paged 8-bit AdamW
+- **Total Experts**: $E = 4$ (cloned from dense MLP blocks with CPU offload)
 - **Active Experts**: $k = 2$ per token
 - **Symmetry Breaking**: Gaussian weight perturbation $\sigma = 0.015 \cdot \text{std}(W)$ to prevent identical gradient trajectories.
 - **Router Loss Formulation**:
   $$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{LM}} + 0.01 \cdot \mathcal{L}_{\text{aux}} + 0.001 \cdot \mathcal{L}_{\text{z}}$$
   - $\mathcal{L}_{\text{aux}}$: Switch/GShard load balancing loss preventing expert collapse.
   - $\mathcal{L}_{\text{z}}$: Router z-loss penalizing large logits to prevent routing instability.
+
 
 ---
 

@@ -1,26 +1,35 @@
 model:
-  name: "HCSCoder-9B"
-  repo_id: "wangzhang/Qwen3.5-9B-abliterated"
-  revision: "f8770a7aefbb15e1ae7c7945be3c01ec010ddac1"
+  name: "HCSCoder-4B"
+  repo_id: "huihui-ai/Huihui-Qwen3.5-4B-Claude-4.6-Opus-abliterated"
+  revision: "794528f9c51127730c7cf8bcfda63164581ae722"
   base_architecture: "Qwen3_5ForConditionalGeneration"
   model_type: "qwen3_5"
   license: "apache-2.0"
-  parameters: 9000000000
+  parameters: 4000000000
   chat_template: "chatml"
   max_context_length: 32768
   dtype: "bfloat16"
 
 alternative_text_candidate:
-  repo_id: "lukey03/Qwen3.5-9B-abliterated"
-  revision: "6242e3443765b5ebb35b55e7565b4eeb3e278be2"
+  repo_id: "chinmankokumin/Qwen3.5-4B-abliterated"
+  revision: "main"
   base_architecture: "Qwen3_5ForCausalLM"
   model_type: "qwen3_5_text"
 
 hub:
   user: "timfromhcs"
   namespace: "timfromhcs"
-  target_model_repo: "timfromhcs/HCSCoder-Qwen3.5-9B"
-  target_gguf_repo: "timfromhcs/HCSCoder-Qwen3.5-9B-GGUF"
-  target_moe_repo: "timfromhcs/HCSCoder-Qwen3.5-9B-MoE"
+  target_model_repo: "timfromhcs/HCSCoder-Qwen3.5-4B"
+  target_gguf_repo: "timfromhcs/HCSCoder-Qwen3.5-4B-GGUF"
+  target_moe_repo: "timfromhcs/HCSCoder-Qwen3.5-4B-MoE"
   target_data_repo: "timfromhcs/HCSCoder-9B-Training-Data"
   autotrain_space: "timfromhcs/autotrain-advanced"
+
+memory_guard:
+  enable_memory_offload: true
+  enable_self_healing: true
+  offload_dir: "./offload"
+  max_gpu_memory: "12GiB"
+  max_cpu_memory: "30GiB"
+  expandable_segments: true
+
