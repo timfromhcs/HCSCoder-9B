@@ -1,0 +1,8 @@
+{
+  "suite": "BFCL_V4",
+  "total_evaluated": 50,
+  "ast_accuracy": 0.94,
+  "web_search_recovery_rate": 0.91,
+  "memory_consistency": 0.93,
+  "format_compliance": 0.98
+}

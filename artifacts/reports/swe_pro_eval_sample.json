@@ -1,0 +1,82 @@
+[
+  {
+    "instance_id": "instance_NodeBB__NodeBB-00c70ce7b0541cfc94afe567921d7668cdc8f4ac-vnan",
+    "problem_statement": "## Title: Post cache access and slug existence checks behave inconsistently\n\n\n### Description\nPost c"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-04998908ba6721d64eba79ae3b65a351dcfbc5b5-vnan",
+    "problem_statement": "## Title: Email confirmation cannot be validated or re-sent after some time passes\n\n### Description:"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-05f2236193f407cf8e2072757fbd6bb170bc13f0-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "# Lack of support for retrieving topics in ascending order by last post date\n\n# Description:\n\nThe cu"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-087e6020e490b4a1759f38c1ad03869511928263-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "## Title: Centralize Email Validation State Management\n\n### Description\nEmail validation state is cu"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-0c81642997ea1d827dbd02c311db9d4976112cd4-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "**Title: Unable to accept post in post queue when the topic get merged** \n**Description:** This issu"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-0e07f3c9bace416cbab078a30eae972868c0a8a3-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "## Restrict use of system-reserved tags to privileged users\n\n### Description\nIn the current system, "
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-0f788b8eaa4bba3c142d171fd941d015c53b65fc-v0ec6d6c2baf3cb4797482ce4829bc25cd5716649",
+    "problem_statement": "## Title: Topic Thumbnails Not Removed on Topic Deletion \n\n#### Description\n\nWhen a topic is deleted"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-1ea9481af6125ffd6da0592ed439aa62af0bca11-vd59a5728dfc977f44533186ace531248c2917516",
+    "problem_statement": "## Title:\n\nDuplicate topics created when multiple concurrent create requests are issued by the same "
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-2657804c1fb6b84dc76ad3b18ecf061aaab5f29f-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "\"## Title:\nPinned topic ordering can behave inconsistently\n\n## Description\nCurrently, changing the o"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-397835a05a8e2897324e566b41c5e616e172b4af-v89631a1cdb318276acb48860c5d78077211397c6",
+    "problem_statement": "## Title:  \n\nList operations do not support removing multiple distinct elements in a single call  \n\n"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-3c85b944e30a0ba8b3ec9e1f441c74f383625a15-v4fbcfae8b15e4ce5d132c408bca69ebb9cf146ed",
+    "problem_statement": "**Title: Allow Non-Admins Forum Access while in Maintenance Mode**\n\n**Description**\n\nNow Nodebb has "
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-4327a09d76f10a79109da9d91c22120428d3bdb9-vnan",
+    "problem_statement": "# Cannot retrieve selected fields from objects using `db.getObject` or `db.getObjects`\n\n## Descripti"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-445b70deda20201b7d9a68f7224da751b3db728c-v4fbcfae8b15e4ce5d132c408bca69ebb9cf146ed",
+    "problem_statement": "## Title:\nInvalid input handling and response consistency in chats and users API\n\n#### Description:\n"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-6489e9fd9ed16ea743cc5627f4d86c72fbdb3a8a-v2c59007b1005cd5cd14cbb523ca5229db1fd2dd8",
+    "problem_statement": "## Title Post upload paths are stored inconsistently without the files/ prefix\n\n## Description\nPost "
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-6ea3b51f128dd270281db576a1b59270d5e45db0-vnan",
+    "problem_statement": "## Title: Lack of unified bulk increment support for sorted sets across databases\n\n## Description of"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-70b4a0e2aebebe8f2f559de6680093d96a697b2f-vnan",
+    "problem_statement": "## Title:\n\nAdd support for min/max score ranges in sortedSetsCardSum\n\n#### Description:\n\nThe databas"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-767973717be700f46f06f3e7f4fc550c63509046-vnan",
+    "problem_statement": "## Title\n\nEnable Bulk Field Increments Across Multiple Objects\n\n## Why is this needed \n\nApplying inc"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-76c6e30282906ac664f2c9278fc90999b27b1f48-vd59a5728dfc977f44533186ace531248c2917516",
+    "problem_statement": "## Title\nPlugin activation accepts invalid plugin identifiers without validation\n\n## Problem Descrip"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-7b8bffd763e2155cf88f3ebc258fa68ebe18188d-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "# Title: Missing internal utility functions for managing API tokens\n\n\n## Description\nThe API utiliti"
+  },
+  {
+    "instance_id": "instance_NodeBB__NodeBB-8168c6c40707478f71b8af60300830fe554c778c-vf2cf3cbd463b7ad942381f1c6d077626485a1e9e",
+    "problem_statement": "**Title: Uploaded group and user cover and profile images are not fully cleaned up from disk when re"
+  }
+]

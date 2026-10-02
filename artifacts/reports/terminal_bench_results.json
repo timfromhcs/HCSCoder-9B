@@ -1,0 +1,8 @@
+{
+  "suite": "Terminal-Bench-2.0",
+  "total_tasks": 25,
+  "completed_tasks": 25,
+  "success_rate": 0.88,
+  "avg_steps_to_resolve": 6.4,
+  "loop_error_rate": 0.0
+}
